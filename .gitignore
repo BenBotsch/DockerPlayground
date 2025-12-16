@@ -1,6 +1,17 @@
-*.i
-*.ii
-*.gpu
-*.ptx
-*.cubin
-*.fatbin
+# build artifacts
+build/
+out/
+cmake-build-*/
+
+# conan local (optional)
+.conan2/
+.conan/
+
+# editor
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db

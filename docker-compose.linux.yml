@@ -1,0 +1,15 @@
+services:
+  ci-linux:
+    build:
+      context: .
+      dockerfile: docker/linux/Dockerfile
+    volumes:
+      - .:/workspace
+      - conan-linux:/root/.conan2
+      - build-linux:/workspace/build
+    working_dir: /workspace
+    command: ["bash", "-lc", "bash scripts/ci-linux.sh"]
+
+volumes:
+  conan-linux:
+  build-linux:

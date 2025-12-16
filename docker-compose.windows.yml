@@ -1,0 +1,15 @@
+services:
+  ci-windows:
+    build:
+      context: .
+      dockerfile: docker/windows/Dockerfile
+    volumes:
+      - .:C:\workspace
+      - conan-windows:C:\Users\ContainerUser\.conan2
+      - build-windows:C:\workspace\build
+    working_dir: C:\workspace
+    command: ["cmd", "/C", "scripts\\ci-windows.cmd"]
+
+volumes:
+  conan-windows:
+  build-windows:
