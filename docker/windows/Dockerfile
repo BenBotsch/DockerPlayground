@@ -2,21 +2,33 @@
 
 FROM mcr.microsoft.com/windows/servercore:ltsc2022 AS build
 
+# ----------------------------
+# Install Chocolatey
+# ----------------------------
+SHELL ["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-Command"]
+
+RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 ; \iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+
+# ----------------------------
+# Switch back to cmd
+# ----------------------------
 SHELL ["cmd", "/S", "/C"]
 
-# Download VS Build Tools
+# ----------------------------
+# Visual Studio Build Tools
+# ----------------------------
 RUN curl -SL https://aka.ms/vs/17/release/vs_buildtools.exe -o vs.exe
-
-# Install MSVC toolchain (SINGLE LINE!)
 RUN vs.exe --quiet --wait --norestart --nocache --add Microsoft.VisualStudio.Workload.VCTools --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64
-
-# Cleanup
 RUN del vs.exe
 
-# Tools
+# ----------------------------
+# Tools via Chocolatey
+# ----------------------------
 RUN choco install -y cmake ninja git python
 
+# ----------------------------
 # Conan
+# ----------------------------
 RUN pip install "conan>=2.20,<3"
 
 WORKDIR C:\workspace
