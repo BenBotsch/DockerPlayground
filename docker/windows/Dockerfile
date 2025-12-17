@@ -11,13 +11,11 @@ RUN curl -SL https://aka.ms/vs/17/release/vs_buildtools.exe -o vs.exe ^
  && del vs.exe
 
 RUN choco install -y cmake ninja git python
+
 RUN pip install "conan>=2.20,<3"
 
 WORKDIR C:\workspace
 
-# -------------------------
-# Runtime / test stage
-# -------------------------
 FROM build AS runtime
-
 WORKDIR C:\workspace
+

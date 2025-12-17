@@ -1,5 +1,6 @@
 services:
   ci-linux:
+    image: dockerplayground-linux
     build:
       context: .
       dockerfile: docker/linux/Dockerfile
@@ -11,9 +12,7 @@ services:
     command: ["bash", "-lc", "bash scripts/ci-linux.sh"]
 
   shell:
-    build:
-      context: .
-      dockerfile: docker/linux/Dockerfile
+    image: dockerplayground-linux
     volumes:
       - .:/workspace
       - conan-linux:/root/.conan2
