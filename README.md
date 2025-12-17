@@ -1,4 +1,4 @@
-# my-cv-project
+# Docker Playground
 
 Modern C++ (C++20) • CMake • Conan 2 • OpenCV • Docker
 
@@ -59,3 +59,69 @@ scripts/
 
 docker-compose.linux.yml
 docker-compose.windows.yml
+```
+
+## 🐳 Building & Using Docker Images (Linux & Windows)
+
+### 🐧 Linux Docker Image
+
+The Linux image is intended for daily development, CI, and fast iteration.
+It can be built and run on any host OS (Windows, Linux, macOS).
+
+#### **Build the Linux image**
+
+```bash
+docker compose -f docker-compose.linux.yml build
+```
+
+#### **Run build and unit tests**
+
+```bash
+docker compose -f docker-compose.linux.yml run --rm ci-linux
+```
+
+This will:
+
+- Start a Linux container
+- Install dependencies via Conan (cached)
+- Configure the project using CMake presets
+- Build all targets
+- Execute all unit tests
+
+#### **Start an interactive development shell**
+
+```bash
+docker compose -f docker-compose.linux.yml run --rm shell
+```
+
+Inside the container you can:
+
+- Run CMake manually
+- Execute tests selectively
+- Run demo applications
+- Inspect build artifacts
+
+#### **Example:**
+
+```bash
+cmake --preset conan-release
+cmake --build --preset conan-release
+ctest --preset conan-release
+```
+
+### 🪟 Windows Docker Image (MSVC)
+
+The Windows image builds and tests native Windows binaries using MSVC.
+It requires Docker Desktop to run in Windows container mode.
+
+#### **Build the Windows image**
+
+```bash
+docker compose -f docker-compose.windows.yml build
+```
+
+#### **Run build and unit tests**
+
+```bash
+docker compose -f docker-compose.windows.yml run --rm ci-windows
+```
