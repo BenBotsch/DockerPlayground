@@ -11,10 +11,10 @@ conan install . ^
   --build=missing ^
   -s build_type=%BUILD_TYPE%
 
-cmake --preset conan-%BUILD_TYPE%
+cmake --preset conan-release
 
-cmake --build --preset conan-%BUILD_TYPE%
+cmake --build --preset conan-release
 
-ctest --preset conan-%BUILD_TYPE% --output-on-failure
+ctest --preset conan-release --output-on-failure
 
 endlocal
