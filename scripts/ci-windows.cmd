@@ -11,7 +11,7 @@ conan install . ^
   --build=missing ^
   -s build_type=%BUILD_TYPE%
 
-cmake --preset conan-release
+cmake --preset conan-default
 
 cmake --build --preset conan-release
 
