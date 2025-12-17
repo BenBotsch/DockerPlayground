@@ -1,17 +1,20 @@
 @echo off
+setlocal
+
 set BUILD_TYPE=Release
 set BUILD_DIR=build\windows\%BUILD_TYPE%
 
 conan profile detect --force
 
 conan install . ^
-  -of %BUILD_DIR% ^
-  -s build_type=%BUILD_TYPE% ^
-  --build=missing
+  --output-folder=%BUILD_DIR% ^
+  --build=missing ^
+  -s build_type=%BUILD_TYPE%
 
-cmake -S . -B %BUILD_DIR% -G Ninja ^
-  -DCMAKE_TOOLCHAIN_FILE=%BUILD_DIR%\conan_toolchain.cmake ^
-  -DCMAKE_BUILD_TYPE=%BUILD_TYPE%
+cmake --preset conan-%BUILD_TYPE%
 
-cmake --build %BUILD_DIR%
-ctest --test-dir %BUILD_DIR% --output-on-failure
+cmake --build --preset conan-%BUILD_TYPE%
+
+ctest --preset conan-%BUILD_TYPE% --output-on-failure
+
+endlocal
