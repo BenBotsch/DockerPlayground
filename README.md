@@ -77,7 +77,7 @@ docker compose -f docker-compose.linux.yml build
 #### **Run build and unit tests**
 
 ```bash
-docker compose -f docker-compose.linux.yml run --rm ci-linux
+docker compose -f docker-compose.linux.yml run --rm test
 ```
 
 This will:
@@ -123,5 +123,5 @@ docker compose -f docker-compose.windows.yml build
 #### **Run build and unit tests**
 
 ```bash
-docker compose -f docker-compose.windows.yml run --rm ci-windows
+docker compose -f docker-compose.windows.yml run --rm test
 ```

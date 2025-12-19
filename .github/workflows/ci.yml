@@ -21,7 +21,7 @@ jobs:
       - name: Build & test (Linux)
         run: |
           docker compose -f docker-compose.linux.yml build
-          docker compose -f docker-compose.linux.yml run --rm ci-linux
+          docker compose -f docker-compose.linux.yml run --rm test
 
   windows:
     name: Windows (Docker)
@@ -33,4 +33,4 @@ jobs:
       - name: Build & test (Windows)
         run: |
           docker compose -f docker-compose.windows.yml build
-          docker compose -f docker-compose.windows.yml run --rm ci-windows
+          docker compose -f docker-compose.windows.yml run --rm test
