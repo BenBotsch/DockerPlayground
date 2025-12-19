@@ -1,14 +1,43 @@
 services:
-  ci-windows:
+  # -------------------------------------------------
+  # Build service
+  # -------------------------------------------------
+  build:
+    image: dockerplayground-windows
     build:
       context: .
       dockerfile: docker/windows/Dockerfile
+    command: ["cmd", "/C", "exit 0"]
+
+  # -------------------------------------------------
+  # Test service
+  # -------------------------------------------------
+  test:
+    image: dockerplayground-windows
+    depends_on:
+      - build
     volumes:
       - .:C:\workspace
       - conan-windows:C:\Users\ContainerUser\.conan2
       - build-windows:C:\workspace\build
     working_dir: C:\workspace
     command: ["cmd", "/C", "scripts\\ci-windows.cmd"]
+
+  # -------------------------------------------------
+  # Interactive shell
+  # -------------------------------------------------
+  shell:
+    image: dockerplayground-windows
+    depends_on:
+      - build
+    volumes:
+      - .:C:\workspace
+      - conan-windows:C:\Users\ContainerUser\.conan2
+      - build-windows:C:\workspace\build
+    working_dir: C:\workspace
+    tty: true
+    stdin_open: true
+    command: ["cmd"]
 
 volumes:
   conan-windows:

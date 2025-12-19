@@ -1,9 +1,21 @@
 services:
-  ci-linux:
+  # -------------------------------------------------
+  # Build service
+  # -------------------------------------------------
+  build:
     image: dockerplayground-linux
     build:
       context: .
       dockerfile: docker/linux/Dockerfile
+    command: ["true"]
+
+  # -------------------------------------------------
+  # Test service
+  # -------------------------------------------------
+  test:
+    image: dockerplayground-linux
+    depends_on:
+      - build
     volumes:
       - .:/workspace
       - conan-linux:/root/.conan2
@@ -11,8 +23,13 @@ services:
     working_dir: /workspace
     command: ["bash", "-lc", "bash scripts/ci-linux.sh"]
 
+  # -------------------------------------------------
+  # Interactive shell (uses the built image)
+  # -------------------------------------------------
   shell:
     image: dockerplayground-linux
+    depends_on:
+      - build
     volumes:
       - .:/workspace
       - conan-linux:/root/.conan2
@@ -25,3 +42,4 @@ services:
 volumes:
   conan-linux:
   build-linux:
+
