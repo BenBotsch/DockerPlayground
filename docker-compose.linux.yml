@@ -37,7 +37,8 @@ services:
     working_dir: /workspace
     tty: true
     stdin_open: true
-    command: ["bash"]
+    command: ["bash", "-i"]
+    #"-c", "source scripts/dev-shell-linux.sh && exec bash"]
 
 volumes:
   conan-linux:
