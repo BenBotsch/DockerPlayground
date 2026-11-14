@@ -1,107 +1,40 @@
 # Docker Playground
 
-Modern C++ (C++20) • CMake • Conan 2 • OpenCV • Docker
+[![CI](https://github.com/BenBotsch/DockerPlayground/actions/workflows/ci.yml/badge.svg)](https://github.com/BenBotsch/DockerPlayground/actions/workflows/ci.yml)
+![C++20](https://img.shields.io/badge/C%2B%2B-20-00599c)
+![Conan 2](https://img.shields.io/badge/Conan-2-6699cb)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-A cross-platform C++ project template using **CMake + Conan 2** with **OpenCV** and **unit tests**, designed to be built and tested reproducibly using **Docker** on **Linux and Windows**.
+A cross-platform C++20 template with CMake, Conan 2, OpenCV and Catch2. It builds and tests reproducibly in Docker on Linux and on Windows, so the host needs no local toolchain. Conan resolves the same dependencies on both platforms and caches them for fast reruns.
 
-This setup allows:
+## Requirements
 
-- Linux builds & tests on any host
-- Windows builds & tests using Windows containers
-- Identical dependency resolution via Conan 2
-- No local toolchain pollution
+You need Git and Docker Desktop. On a Windows host, Docker Desktop needs WSL 2 and must switch between Linux and Windows containers, because it cannot run both at the same time.
 
----
-
-## ✨ Features
-
-- Modern **C++20**
-- **CMake** with Conan 2 integration
-- **OpenCV** as a third-party dependency
-- **Catch2** for unit testing
-- Fully containerized **Linux and Windows CI**
-- Reproducible builds
-- Cached dependencies (fast re-runs)
-
----
-
-## 📦 Requirements
-
-### General
-
-- **Git**
-- **Docker Desktop**
-
-### Windows Host
-
-- Docker Desktop **with WSL2 enabled**
-- Ability to switch between:
-  - *Linux containers*
-  - *Windows containers*
-
-> ⚠️ Docker Desktop cannot run Linux and Windows containers at the same time.
-> You must switch modes depending on the target platform.
-
----
-
-## 📁 Repository Structure (Relevant Parts)
+## Layout
 
 ```text
 docker/
- ├─ linux/
- │   └─ Dockerfile
- └─ windows/
-     └─ Dockerfile
-
+  linux/Dockerfile
+  windows/Dockerfile
 scripts/
- ├─ ci-linux.sh
- └─ ci-windows.cmd
-
+  ci-linux.sh
+  ci-windows.cmd
 docker-compose.linux.yml
 docker-compose.windows.yml
 ```
 
-## 🐳 Building & Using Docker Images (Linux & Windows)
+## Linux image
 
-### 🐧 Linux Docker Image
-
-The Linux image is intended for daily development, CI, and fast iteration.
-It can be built and run on any host OS (Windows, Linux, macOS).
-
-#### **Build the Linux image**
+The Linux image serves daily development, CI and fast iteration. It runs on any host.
 
 ```bash
-docker compose -f docker-compose.linux.yml build
+docker compose -f docker-compose.linux.yml build          # build the image
+docker compose -f docker-compose.linux.yml run --rm test  # install dependencies, build and run all tests
+docker compose -f docker-compose.linux.yml run --rm shell # interactive shell
 ```
 
-#### **Run build and unit tests**
-
-```bash
-docker compose -f docker-compose.linux.yml run --rm test
-```
-
-This will:
-
-- Start a Linux container
-- Install dependencies via Conan (cached)
-- Configure the project using CMake presets
-- Build all targets
-- Execute all unit tests
-
-#### **Start an interactive development shell**
-
-```bash
-docker compose -f docker-compose.linux.yml run --rm shell
-```
-
-Inside the container you can:
-
-- Run CMake manually
-- Execute tests selectively
-- Run demo applications
-- Inspect build artifacts
-
-#### **Example:**
+Inside the shell the presets work as usual.
 
 ```bash
 cmake --preset conan-release
@@ -109,19 +42,15 @@ cmake --build --preset conan-release
 ctest --preset conan-release
 ```
 
-### 🪟 Windows Docker Image (MSVC)
+## Windows image
 
-The Windows image builds and tests native Windows binaries using MSVC.
-It requires Docker Desktop to run in Windows container mode.
-
-#### **Build the Windows image**
+The Windows image builds and tests native binaries with MSVC. Docker Desktop must run in Windows container mode.
 
 ```bash
 docker compose -f docker-compose.windows.yml build
-```
-
-#### **Run build and unit tests**
-
-```bash
 docker compose -f docker-compose.windows.yml run --rm test
 ```
+
+## License
+
+MIT, see [LICENSE](LICENSE).
